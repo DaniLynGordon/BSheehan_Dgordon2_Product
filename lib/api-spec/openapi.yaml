@@ -1,0 +1,585 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Network Navigator API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: connections
+    description: Networking connections
+  - name: followUps
+    description: Follow-up reminders
+  - name: dashboard
+    description: Dashboard summary
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /connections:
+    get:
+      operationId: listConnections
+      tags: [connections]
+      summary: List all connections for current user
+      responses:
+        "200":
+          description: List of connections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Connection"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createConnection
+      tags: [connections]
+      summary: Create a new connection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConnectionBody"
+      responses:
+        "201":
+          description: Created connection
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Connection"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /connections/{id}:
+    get:
+      operationId: getConnection
+      tags: [connections]
+      summary: Get a single connection by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Connection
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Connection"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateConnection
+      tags: [connections]
+      summary: Update a connection
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConnectionBody"
+      responses:
+        "200":
+          description: Updated connection
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Connection"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteConnection
+      tags: [connections]
+      summary: Delete a connection
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /follow-ups:
+    get:
+      operationId: listFollowUps
+      tags: [followUps]
+      summary: List all follow-ups for current user
+      parameters:
+        - name: connectionId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [pending, completed, overdue]
+      responses:
+        "200":
+          description: List of follow-ups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FollowUp"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createFollowUp
+      tags: [followUps]
+      summary: Create a follow-up for a connection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFollowUpBody"
+      responses:
+        "201":
+          description: Created follow-up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowUp"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /follow-ups/{id}:
+    get:
+      operationId: getFollowUp
+      tags: [followUps]
+      summary: Get a single follow-up by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Follow-up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowUp"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateFollowUp
+      tags: [followUps]
+      summary: Reschedule or update a follow-up
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFollowUpBody"
+      responses:
+        "200":
+          description: Updated follow-up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowUp"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteFollowUp
+      tags: [followUps]
+      summary: Delete a follow-up
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /follow-ups/{id}/complete:
+    post:
+      operationId: completeFollowUp
+      tags: [followUps]
+      summary: Mark a follow-up as completed
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Completed follow-up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowUp"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary for current user
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/progress:
+    get:
+      operationId: getProgressStats
+      tags: [dashboard]
+      summary: Get follow-through rate and progress stats
+      responses:
+        "200":
+          description: Progress stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressStats"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    Connection:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        name:
+          type: string
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - name
+        - createdAt
+        - updatedAt
+
+    CreateConnectionBody:
+      type: object
+      properties:
+        name:
+          type: string
+        notes:
+          type: ["string", "null"]
+        followUpDate:
+          type: ["string", "null"]
+          format: date-time
+          description: Optional follow-up date to schedule immediately
+      required:
+        - name
+
+    UpdateConnectionBody:
+      type: object
+      properties:
+        name:
+          type: string
+        notes:
+          type: ["string", "null"]
+
+    FollowUp:
+      type: object
+      properties:
+        id:
+          type: integer
+        connectionId:
+          type: integer
+        userId:
+          type: string
+        scheduledDate:
+          type: string
+          format: date-time
+        originalDueDate:
+          type: string
+          format: date-time
+        completedAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        connection:
+          $ref: "#/components/schemas/Connection"
+      required:
+        - id
+        - connectionId
+        - userId
+        - scheduledDate
+        - originalDueDate
+        - createdAt
+        - updatedAt
+        - connection
+
+    CreateFollowUpBody:
+      type: object
+      properties:
+        connectionId:
+          type: integer
+        scheduledDate:
+          type: string
+          format: date-time
+      required:
+        - connectionId
+        - scheduledDate
+
+    UpdateFollowUpBody:
+      type: object
+      properties:
+        scheduledDate:
+          type: string
+          format: date-time
+        notes:
+          type: ["string", "null"]
+
+    DashboardSummary:
+      type: object
+      properties:
+        todayCount:
+          type: integer
+        upcomingCount:
+          type: integer
+        overdueCount:
+          type: integer
+        weekFollowUps:
+          type: array
+          items:
+            $ref: "#/components/schemas/FollowUp"
+        overdueFollowUps:
+          type: array
+          items:
+            $ref: "#/components/schemas/FollowUp"
+        upcomingFollowUps:
+          type: array
+          items:
+            $ref: "#/components/schemas/FollowUp"
+        todayFollowUps:
+          type: array
+          description: Follow-ups due today
+          items:
+            $ref: "#/components/schemas/FollowUp"
+        reminderFollowUps:
+          type: array
+          description: Long-term follow-ups (30+ day span) due within the next 5 days
+          items:
+            $ref: "#/components/schemas/FollowUp"
+      required:
+        - todayCount
+        - upcomingCount
+        - overdueCount
+        - weekFollowUps
+        - overdueFollowUps
+        - upcomingFollowUps
+        - todayFollowUps
+        - reminderFollowUps
+
+    ProgressStats:
+      type: object
+      properties:
+        totalScheduled:
+          type: integer
+        totalCompleted:
+          type: integer
+        onTimeCount:
+          type: integer
+        followThroughRate:
+          type: number
+          description: On-time follow-through rate as a percentage (0-100). onTimeCount / totalScheduled * 100
+        completionRate:
+          type: number
+          description: Total completion rate as a percentage (0-100). totalCompleted / totalScheduled * 100
+        completedFollowUps:
+          type: array
+          items:
+            $ref: "#/components/schemas/FollowUp"
+      required:
+        - totalScheduled
+        - totalCompleted
+        - onTimeCount
+        - followThroughRate
+        - completionRate
+        - completedFollowUps

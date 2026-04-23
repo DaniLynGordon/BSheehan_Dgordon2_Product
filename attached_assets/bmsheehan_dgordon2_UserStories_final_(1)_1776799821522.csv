@@ -1,0 +1,116 @@
+﻿Bsheehan_dgordon2_UserStories_draft,,,,,
+Story#,Title,As a/an,I want,So that,Acceptance criteria
+1,Log New Networking Connection,Overextended Early-Career Networker,to log a new networking connection after a conversation,I do not forget the person or the conversation summary of our discussion,"Given I have completed a networking conversation
+When I enter the contact’s name and name required; notes optional
+Then the connection is saved and visible in my contact list
+
+Given a connection is saved
+When I return to the app later
+Then I can see the contact details and notes
+
+The system stores the date the connection was created"
+2,Set Follow-Up Intention,Overextended Early-Career Networker,to set an intended follow-up date for a connection,I can turn good intentions into a concrete commitment,"Given a saved connection
+When I choose a follow-up timeframe
+Then the commitment is associated with that contact
+
+Given I have set a timeframe
+When I view the contact
+Then I can clearly see the scheduled follow-up date
+
+The follow-up date can be updated if needed"
+3,Receive Follow-Up Reminder,Overextended Early-Career Networker,to receive an in-app and/or notification reminder before my follow-up is due,I complete follow-ups within my intended timeframe,"Given a follow-up is scheduled
+X time before the scheduled follow-up date
+Then I receive a notification
+
+Given I receive a reminder
+When I open the app
+Then it opens the contact detail page for that connection
+
+Reminders are tied only to scheduled follow-ups"
+4,Mark Follow-Up Complete,Overextended Early-Career Networker,to mark a follow-up as complete,I can track that I followed through on my commitment,"Given a scheduled follow-up
+When I complete outreach
+Then I can mark it as complete
+
+Given it is marked complete
+Then it is removed from the upcoming/overdue follow-up list
+
+Completion auto-records completion date/time"
+5,View Upcoming Follow-Ups,Overextended Early-Career Networker,to see a list of upcoming follow-ups,I know what relationships need attention soon,"Given I open the app
+When I view my dashboard
+Then I see upcoming follow-ups sorted by soonest follow-up date first
+
+Overdue follow-ups are clearly indicated
+
+Completed follow-ups are excluded from the default view"
+6,Identify Overdue Follow-Ups,Overextended Early-Career Networker,to see when a follow-up is overdue,I can take action before relationships fade,"Given a follow-up when the scheduled follow-up date/time is earlier than the current date/time
+When I open the app
+Then the item is labeled overdue
+
+Overdue follow-ups appear in an 'Overdue' section/list"
+7,Capture Conversation Notes,Overextended Early-Career Networker,to store conversation notes and next steps,I can reference context during future outreach,"Given a saved connection
+When I add notes
+Then the notes are stored with that contact
+
+Notes can be edited later
+
+Notes are visible on the contact detail page and when opening the reminder for that contact during future follow-ups"
+8,Edit Connection Details,Overextended Early-Career Networker,to see my follow-through progress,I feel confident I am maintaining important relationships,"Given I have logged connections
+When I view my progress summary
+Then I can see the (number of follow-ups completed on or before the scheduled follow-up date) / (number of follow-ups whose scheduled due date falls within the period)
+
+The calculation reflects only completed vs. scheduled follow-ups
+
+The metric updates when follow-ups are marked complete"
+9,Schedule Long-Term Follow-Up,Overextended Early-Career Networker,to schedule follow-ups more than 30 days in the future,I can maintain long-term professional relationships,"Given I am setting a follow-up
+When I select a date more than 30 days away
+Then the system accepts and stores the date
+
+Then the follow-up appears immediately in the follow-up list, even if it's 30+ days away
+
+Reminders follow the same reminder rule as Story 3 and keeps testing consistent"
+10,Reschedule Follow-Up,Overextended Early-Career Networker,to reschedule a follow-up if circumstances change,I can maintain realistic commitments without losing the relationship,"Given a scheduled follow-up
+When I change the date
+Then the new date replaces the old date on the connection page
+
+The updated date triggers reminders appropriately
+
+If a follow-up is overdue and I reschedule it to a future date, it is no longer labeled overdue
+
+The change is reflected immediately in my dashboard
+
+After rescheduling, 'on-time' is evaluated against the original due date / most recent due date"
+11,View All Active Connections,Overextended Early-Career Networker,to manage multiple networking connections at once,I do not lose track during recruiting seasons,"Given I log multiple contacts
+When I view my connection list
+Then all connections with a pending follow-up are displayed
+
+Each connection maintains its own follow-up schedule
+
+Marking one follow-up complete doesn't change the status or dates of other connections"
+12,Track Follow-Through Rate,Overextended Early-Career Networker,to see evidence that I am consistently following through,I see evidence that I am maintaining relationships,"Given I complete follow-ups on time
+When I review my progress
+Then I can clearly see counts/trends of completed follow-ups and on-time completion rate
+
+Progress reflects adherence to my original timeframe
+
+The summary reinforces completed commitments"
+13,View History of Completed Follow-Ups,Overextended Early-Career Networker,to see a list of completed follow-ups,I can reflect on maintained relationships,"Given completed follow-ups exist
+When I access my history from a progress summary
+Then I see a list of completed follow-ups
+
+Each item includes the completion date and what identifies the item. Each item shows connection name and completion date
+
+Completed follow-ups appear in a Completed section/list and don't appear in the Pending/Upcoming/Overdue list"
+14,Re-Engage With Long-Term Follow-Ups,Overextended Early-Career Networker,to return to long-term follow-ups when due date is reached or X amount of days prior to due date,I maintain engagement over extended timelines,"Given a follow-up is scheduled more than 30 days ahead of the scheduled due date
+When the reminder occurs 5 days before
+Then I am prompted to re-engage with the given connection
+
+The follow-up remains visible in the upcoming list and contact list until completed
+
+Engagement is recorded when I act on it"
+15,Delete Irrelevant Connection,Overextended Early-Career Networker,to remove a connection that is no longer relevant,my list stays focused and manageable,"Given a saved connection
+When I choose to delete it
+Then it is removed from my follow-up list
+
+Deleted connections no longer appear in upcoming follow-ups and are automatically removed
+
+Other connections remain unaffected"

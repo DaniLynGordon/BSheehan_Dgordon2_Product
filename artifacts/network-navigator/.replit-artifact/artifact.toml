@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Network Navigator"
+version = "1.0.0"
+id = "artifacts/network-navigator"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18099
+
+[services.development]
+run = "pnpm --filter @workspace/network-navigator run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/network-navigator", "run", "build" ]
+publicDir = "artifacts/network-navigator/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18099"
+BASE_PATH = "/"
