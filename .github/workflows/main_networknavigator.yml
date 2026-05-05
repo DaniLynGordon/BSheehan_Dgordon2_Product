@@ -54,7 +54,7 @@ jobs:
       - name: Prepare deployment package
         run: |
           mkdir -p deploy/artifacts/api-server
-          mkdir -p deploy/artifacts/networknavigator
+          mkdir -p deploy/artifacts/network-navigator
           cp -r artifacts/api-server/dist deploy/artifacts/api-server/dist
           cp -r artifacts/network-navigator/dist deploy/artifacts/network-navigator/dist
 
