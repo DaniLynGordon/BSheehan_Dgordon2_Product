@@ -1,5 +1,5 @@
 # BSheehan_Dgordon2_Product
-# Network Navigator
+# Network Navigator  
 
 Network Navigator is a prototype web app built for early-career professionals who want to keep track of networking connections in one place. The app helps users log contacts, save notes and context from conversations, and stay organized with follow-up reminders.
 
