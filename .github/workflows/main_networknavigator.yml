@@ -48,6 +48,8 @@ jobs:
           NODE_ENV: production
           PORT: "3000"
           BASE_PATH: "/"
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_CLERK_PROXY_URL: ${{ secrets.VITE_CLERK_PROXY_URL }}
 
       # Copy only the compiled output into a clean deploy/ folder.
       # Azure only needs the built files, not the TypeScript source code.
