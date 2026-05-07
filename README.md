@@ -3,7 +3,7 @@
 
 Network Navigator is a prototype web app built for early-career professionals who want to keep track of networking connections in one place. The app helps users log contacts, save notes and context from conversations, and stay organized with follow-up reminders.
 
-## Project Overview
+## Project Overview    
 
 This project was created in Replit as part of a product development assignment. The goal was to build a functional prototype, create a landing page, connect the product to a database if needed, and prepare the code for version control and deployment.
 
